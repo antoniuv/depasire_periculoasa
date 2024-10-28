@@ -1479,5 +1479,6 @@
     <None Include="lib\x64\GL\DLLs\glew32.dll">
       <Filter>Resource Files\template-built-ins\DLLs\64b</Filter>
     </None>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
