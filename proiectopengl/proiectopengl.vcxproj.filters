@@ -998,6 +998,12 @@
     <ClInclude Include="include\glm\simd\vector_relational.h">
       <Filter>Header Files\template-built-ins\glm\simd</Filter>
     </ClInclude>
+    <ClInclude Include="road.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cars.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="include\glm\CMakeLists.txt">

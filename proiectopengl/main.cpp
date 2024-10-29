@@ -13,16 +13,22 @@
 #include "glm/gtc/type_ptr.hpp"
 #include <SOIL.h>
 
+
 //  Identificatorii obiectelor de tip OpenGL;
 GLuint
-VaoId,
-VboId,
-EboId,
+VaoId1,
+VaoId2,
+VboId1,
+EboId1,
+VboId2,
+EboId2,
 ProgramId,
 viewLocation,
 projLocation,
 myMatrixLocation;
 
+GLuint 
+	roadTexture, carTexture;
 GLuint
 texture;
 //	Dimensiunile ferestrei de afisare;
@@ -36,6 +42,10 @@ glm::mat4 view;
 //	Elemente pentru matricea de proiectie;
 float xMin = -800.f, xMax = 800, yMin = -600, yMax = 600;
 glm::mat4 projection;
+
+#include "road.h" //include toate proprietatile pentru randarea roadului
+#include "cars.h" //include toate proprietatile pentru randarea masinilor
+
 //	Functia de incarcare a texturilor in program;
 void LoadTexture(const char* texturePath)
 {
@@ -75,49 +85,8 @@ void CreateShaders(void)
 //  In acesta se stocheaza date despre varfuri (coordonate, culori, indici, texturare etc.);
 void CreateVBO(void)
 {
-	//  Coordonatele varfurilor;
-	static const GLfloat cars[] =
-	{
-		//coordonate                      coordonate texturare
-		-207.0f,  0.0f,   0.0f, 1.0f,    0.0f, 0.0f,
-		 0.0f,    0.0f,   0.0f, 1.0f,    1.0f, 0.0f,
-		 0.0f,    388.0f, 0.0f, 1.0f,    1.0f, 1.0f,
-		-207.0f,  388.0f, 0.0f, 1.0f,    0.0f, 1.0f,
-	};
-
-
-	//	Indicii care determina ordinea de parcurgere a varfurilor;
-	static const GLuint CarIndices[] =
-	{
-		//prima masina
-		0, 1, 2,
-		3, 0, 2, 
-	};
-
-	//  Transmiterea datelor prin buffere;
-
-	//  Se creeaza / se leaga un VAO (Vertex Array Object) - util cand se utilizeaza mai multe VBO;
-	glGenVertexArrays(1, &VaoId);                                                   //  Generarea VAO si indexarea acestuia catre variabila VaoId;
-	glBindVertexArray(VaoId);
-
-	//  Se creeaza un buffer comun pentru VARFURI - COORDONATE si CULORI;
-	glGenBuffers(1, &VboId);																//  Generarea bufferului si indexarea acestuia catre variabila VboId;
-	glBindBuffer(GL_ARRAY_BUFFER, VboId);													//  Setarea tipului de buffer - atributele varfurilor;
-	glBufferData(GL_ARRAY_BUFFER, sizeof(cars), cars, GL_STATIC_DRAW);
-
-
-	//	Se creeaza un buffer pentru INDICI;
-	glGenBuffers(1, &EboId);														//  Generarea bufferului si indexarea acestuia catre variabila EboId;
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EboId);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(CarIndices), CarIndices, GL_STATIC_DRAW);
-
-	//	Se activeaza lucrul cu atribute;
-//  Se asociaza atributul (0 = coordonate) pentru shader;
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)0);
-	//  Se asociaza atributul (1 =  coordonate texturare) pentru shader;
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (GLvoid*)(4 * sizeof(GLfloat)));
+	CarPoints();
+	RoadPoints();
 }
 
 //  Elimina obiectele de tip shader dupa rulare;
@@ -135,17 +104,22 @@ void DestroyVBO(void)
 
 	//  Stergerea bufferelor pentru VARFURI(Coordonate + Culori), INDICI;
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	glDeleteBuffers(1, &VboId);
-	glDeleteBuffers(1, &EboId);
-
+	glDeleteBuffers(1, &VboId1);
+	glDeleteBuffers(1, &EboId1);
+	glDeleteBuffers(1, &VboId2);
+	glDeleteBuffers(1, &EboId2);
 	//  Eliberaea obiectelor de tip VAO;
 	glBindVertexArray(0);
-	glDeleteVertexArrays(1, &VaoId);
+	glDeleteVertexArrays(1, &VaoId1);
+	glDeleteVertexArrays(1, &VaoId2);
 }
 
 //  Functia de eliberare a resurselor alocate de program;
 void Cleanup(void)
 {
+	glDeleteTextures(1, &texture); // Delete your texture
+	glDeleteTextures(1, &roadTexture);
+	glDeleteTextures(1, &carTexture);
 	DestroyShaders();
 	DestroyVBO();
 }
@@ -154,12 +128,17 @@ void Cleanup(void)
 void Initialize(void)
 {
 	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);		//  Culoarea de fond a ecranului;
+	
 	CreateVBO();								//  Trecerea datelor de randare spre bufferul folosit de shadere;
 
 	//	Incarcarea texturii;
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	LoadTexture("road.jpg");
+	roadTexture = texture; // Store road texture ID
 	LoadTexture("formula_1_car.png");
+	carTexture = texture; // Store car texture ID
 
 	CreateShaders();							//  Initilizarea shaderelor;
 	//	Instantierea variabilelor uniforme pentru a "comunica" cu shaderele;
@@ -170,29 +149,12 @@ void Initialize(void)
 //  Functia de desenarea a graficii pe ecran;
 void RenderFunction(void)
 {
-	glClear(GL_COLOR_BUFFER_BIT);			//  Se curata ecranul OpenGL pentru a fi desenat noul continut;
+	glClear(GL_COLOR_BUFFER_BIT);	//  Se curata ecranul OpenGL pentru a fi desenat noul continut;
 
 	resizeMatrix = glm::ortho(xMin, xMax, yMin, yMax);
-	// Activarea / legarea texturii active
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture);
-	glUniform1i(glGetUniformLocation(ProgramId, "CarTexture"), 0);
+	DrawRoad();
+	DrawCars();
 
-	//masina de sus
-	matrScale1 = glm::scale(glm::mat4(1.0f), glm::vec3(0.4, 0.4, 0.0));
-	matrTransl = glm::translate(glm::mat4(1.0f), glm::vec3(100.0, -30.0, 0.0));
-	myMatrix = resizeMatrix * matrScale1 * matrTransl;
-	glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(0));
-
-
-	//masina de jos
-	glm::mat4 matrTransl2 = glm::translate(glm::mat4(1.0f), glm::vec3(100.0, -600.0, 0.0));
-	myMatrix = resizeMatrix * matrScale1 * matrTransl2 ;
-	glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(0));
-
-	glutSwapBuffers();
 	glFlush();
 }
 
@@ -202,6 +164,7 @@ int main(int argc, char* argv[])
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);	
 	
+	//aici am calculat dimensiunea ecranului pentru a pune aplicatia in centru
 	int screenWidth = glutGet(GLUT_SCREEN_WIDTH);
 	int screenHeight = glutGet(GLUT_SCREEN_HEIGHT);
 
@@ -218,6 +181,7 @@ int main(int argc, char* argv[])
 	Initialize();						//  Setarea parametrilor necesari pentru fereastra de vizualizare; 
 	glutDisplayFunc(RenderFunction);	//  Desenarea scenei in fereastra;
 	glutIdleFunc(RenderFunction);			//	Asigura rularea continua a randarii;
+	glutTimerFunc(16, MoveRoad, 0); // Start the timer for smooth animation
 	glutCloseFunc(Cleanup);				//  Eliberarea resurselor alocate de program;
 
 
