@@ -1467,10 +1467,10 @@
     <None Include="include\glm\gtx\wrap.inl">
       <Filter>Header Files\template-built-ins\glm\gtx</Filter>
     </None>
-    <None Include="example.vert">
+    <None Include="depasire.vert">
       <Filter>Resource Files\shaders\example</Filter>
     </None>
-    <None Include="example.frag">
+    <None Include="depasire.frag">
       <Filter>Resource Files\shaders\example</Filter>
     </None>
     <None Include="lib\x64\GL\DLLs\freeglut.dll">
