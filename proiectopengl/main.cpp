@@ -6,7 +6,12 @@
 #include <GL/glew.h> // glew apare inainte de freeglut
 #include <GL/freeglut.h> // nu trebuie uitat freeglut.h
 #include "loadShaders.h"
-
+#include "glm/glm.hpp"		//	Bibloteci utilizate pentru transformari grafice;
+#include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtx/transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
+#include <GL/glut.h>
+#include <cstdlib>
 
 //////////////////////////////////////
 
@@ -16,6 +21,14 @@ VboId,
 ColorBufferId,
 ProgramId;
 
+
+GLfloat
+winWidth = 1000, winHeight = 1000;
+//	Variabile catre matricile de transformare;
+glm::mat4
+myMatrix, resizeMatrix;
+//	Variabile pentru proiectia ortogonala;
+float xMin = -500.f, xMax = 500.f, yMin = -500.f, yMax = 500.f;
 
 void CreateVBO(void)
 {
@@ -111,8 +124,15 @@ int main(int argc, char* argv[])
 {
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-	glutInitWindowPosition(100, 100); // pozitia initiala a ferestrei
-	glutInitWindowSize(600, 600); //dimensiunile ferestrei
+
+	const int screenWidth = glutGet(GLUT_SCREEN_WIDTH);
+	const int screenHeight = glutGet(GLUT_SCREEN_HEIGHT);
+
+	const int windowX = (screenWidth - winWidth) / 2;
+	const int windowY = (screenHeight - winHeight) / 2;
+
+	glutInitWindowPosition(windowX, windowY); // pozitia initiala a ferestrei
+	glutInitWindowSize(winWidth, winHeight); //dimensiunile ferestrei
 	glutCreateWindow("Grafica pe calculator - primul exemplu"); // titlul ferestrei
 	glewInit(); // nu uitati de initializare glew; trebuie initializat inainte de a a initializa desenarea
 	Initialize();
