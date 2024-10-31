@@ -17,18 +17,21 @@
 //  Identificatorii obiectelor de tip OpenGL;
 GLuint
 VaoId1,
-VaoId2,
 VboId1,
 EboId1,
+VaoId2,
 VboId2,
 EboId2,
+VaoId3,
+VboId3,
+EboId3,
 ProgramId,
 viewLocation,
 projLocation,
 myMatrixLocation;
 
 GLuint 
-	roadTexture, carTexture;
+	roadTexture, carTexture, backgroundTexture;
 GLuint
 texture;
 //	Dimensiunile ferestrei de afisare;
@@ -40,11 +43,13 @@ myMatrix, resizeMatrix, matrScale1, matrTransl;
 
 glm::mat4 view;
 //	Elemente pentru matricea de proiectie;
-float xMin = -800.f, xMax = 800, yMin = -600, yMax = 600;
+float xMin = -600.f, xMax = 600, yMin = -600, yMax = 600;
 glm::mat4 projection;
 
 #include "road.h" //include toate proprietatile pentru randarea roadului
 #include "cars.h" //include toate proprietatile pentru randarea masinilor
+#include "background.h" //include toate proprietatile pentru randarea backgroundului (iarba)
+
 
 //	Functia de incarcare a texturilor in program;
 void LoadTexture(const char* texturePath)
@@ -64,6 +69,13 @@ void LoadTexture(const char* texturePath)
 	// Incarcarea texturii si transferul datelor in obiectul textura; 
 	int width, height;
 	unsigned char* image = SOIL_load_image(texturePath, &width, &height, 0, SOIL_LOAD_RGBA);
+	if (image == nullptr) {
+		printf("Failed to load texture: %s\n", texturePath);
+		return;
+	}
+	else {
+		printf("Texture loaded: %s \n", texturePath);
+	}
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -85,6 +97,7 @@ void CreateShaders(void)
 //  In acesta se stocheaza date despre varfuri (coordonate, culori, indici, texturare etc.);
 void CreateVBO(void)
 {
+	BackgroundPoints();
 	CarPoints();
 	RoadPoints();
 }
@@ -108,10 +121,14 @@ void DestroyVBO(void)
 	glDeleteBuffers(1, &EboId1);
 	glDeleteBuffers(1, &VboId2);
 	glDeleteBuffers(1, &EboId2);
+	glDeleteBuffers(1, &VboId3);
+	glDeleteBuffers(1, &EboId3);
 	//  Eliberaea obiectelor de tip VAO;
 	glBindVertexArray(0);
 	glDeleteVertexArrays(1, &VaoId1);
 	glDeleteVertexArrays(1, &VaoId2);
+	glDeleteVertexArrays(1, &VaoId3);
+
 }
 
 //  Functia de eliberare a resurselor alocate de program;
@@ -120,6 +137,8 @@ void Cleanup(void)
 	glDeleteTextures(1, &texture); // Delete your texture
 	glDeleteTextures(1, &roadTexture);
 	glDeleteTextures(1, &carTexture);
+	glDeleteTextures(1, &backgroundTexture);
+
 	DestroyShaders();
 	DestroyVBO();
 }
@@ -135,10 +154,16 @@ void Initialize(void)
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+
+	LoadTexture("background.jpg");
+	backgroundTexture = texture;
+
 	LoadTexture("road.jpg");
 	roadTexture = texture; // Store road texture ID
 	LoadTexture("formula_1_car.png");
 	carTexture = texture; // Store car texture ID
+
+	
 
 	CreateShaders();							//  Initilizarea shaderelor;
 	//	Instantierea variabilelor uniforme pentru a "comunica" cu shaderele;
@@ -152,6 +177,7 @@ void RenderFunction(void)
 	glClear(GL_COLOR_BUFFER_BIT);	//  Se curata ecranul OpenGL pentru a fi desenat noul continut;
 
 	resizeMatrix = glm::ortho(xMin, xMax, yMin, yMax);
+	DrawBackground();
 	DrawRoad();
 	DrawCars();
 

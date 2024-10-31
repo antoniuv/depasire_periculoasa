@@ -1,7 +1,7 @@
 float heightRoad = 586.0f; //folosit in MoveRoads
 const int numRoadSegments = 5;
 float roadYPos[numRoadSegments] = { yMax - 3 * heightRoad, yMax - 2 * heightRoad, yMax - heightRoad, yMax, yMax + heightRoad }; // sunt 5 drumuri una legata de cealalta
-float speed = 600.0f; //de aici se poate schimba viteza
+float speed = 900.0f; //de aici se poate schimba viteza
 float offset = 0.0f;
 
 void RoadPoints(void) {
@@ -41,7 +41,7 @@ void DrawRoad(void) {
 	//desenarea drumului
 	glBindVertexArray(VaoId2);
 
-	matrScale1 = glm::scale(glm::mat4(1.0f), glm::vec3(0.6, 0.6, 0.0));
+	matrScale1 = glm::scale(glm::mat4(1.0f), glm::vec3(0.51, 0.51, 0.0));
 
 	for (int i = 0; i < numRoadSegments; i++) {
 		glm::mat4 roadTransform = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, roadYPos[i] + offset, 0.0f));
