@@ -1,4 +1,29 @@
 
+void ProcessSpecialKeys(int key, int xx, int yy)
+{
+	switch (key)			//	Procesarea tastelor 'LEFT', 'RIGHT', 'UP', 'DOWN'
+	{						//	duce la deplasarea patratului pe axele Ox si Oy;
+	case GLUT_KEY_LEFT:
+		tx -= 10;
+		ty += 5;
+		if (angle < 0.2f)angle += 0.2f;	//	Rotire spre stanga;
+		break;
+	case GLUT_KEY_RIGHT:
+		tx += 10;
+		ty += 5;
+		if (angle > -0.2f)angle -= 0.2f;
+		break;
+	case GLUT_KEY_UP:
+		ty += 10;
+		angle = 0;
+		break;
+	case GLUT_KEY_DOWN:
+		ty -= 10;
+		angle = 0;
+		break;
+	}
+}
+
 void CarPoints(void) {
 
 	//  Coordonatele varfurilor;
@@ -49,6 +74,7 @@ void CarPoints(void) {
 // carTexture provine din Initialize(void) in main
 void DrawCars(void) {
 	matrScale1 = glm::scale(glm::mat4(1.0f), glm::vec3(0.45, 0.45, 0.0));
+	matrRot = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0, 0.0, 1.0));
 	// Bind cu texturi si cu VBO, EBO
 	glBindVertexArray(VaoId1);
 	glActiveTexture(GL_TEXTURE0);
@@ -63,8 +89,8 @@ void DrawCars(void) {
 
 
 	//masina de jos
-	glm::mat4 matrTransl2 = glm::translate(glm::mat4(1.0f), glm::vec3(350.0, -600.0, 0.0));
-	myMatrix = resizeMatrix * matrScale1 * matrTransl2;
+	glm::mat4 matrTransl2 = glm::translate(glm::mat4(1.0f), glm::vec3(tx, ty, 0.0));
+	myMatrix = resizeMatrix * matrScale1 * matrTransl2 * matrRot;
 	glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(0));
 }

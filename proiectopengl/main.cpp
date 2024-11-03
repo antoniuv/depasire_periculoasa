@@ -39,11 +39,12 @@ GLfloat
 winWidth = 1200, winHeight = 1000;
 //	Variabile catre matricile de transformare;
 glm::mat4
-myMatrix, resizeMatrix, matrScale1, matrTransl;
+myMatrix, resizeMatrix, matrScale1, matrTransl, matrRot;
+
 
 glm::mat4 view;
 //	Elemente pentru matricea de proiectie;
-float xMin = -600.f, xMax = 600, yMin = -600, yMax = 600;
+float xMin = -600.f, xMax = 600, yMin = -600, yMax = 600, tx = 350, ty = -600, angle = 0;;
 glm::mat4 projection;
 
 #include "road.h" //include toate proprietatile pentru randarea roadului
@@ -208,6 +209,7 @@ int main(int argc, char* argv[])
 	glutDisplayFunc(RenderFunction);	//  Desenarea scenei in fereastra;
 	glutIdleFunc(RenderFunction);			//	Asigura rularea continua a randarii;
 	glutTimerFunc(16, MoveRoad, 0); // Start the timer for smooth animation
+	glutSpecialFunc(ProcessSpecialKeys);
 	glutCloseFunc(Cleanup);				//  Eliberarea resurselor alocate de program;
 
 
