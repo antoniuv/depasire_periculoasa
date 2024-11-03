@@ -30,7 +30,7 @@ void CheckAndHandleCollisions() {
 
 	if (CheckCollision(car1, car2)) {
 		// Handle collision between car1 and car2 (e.g., stop movement, display a message, etc.)
-		speed1 = 0; // Example action: stop the car
+		speed1 = 1800; // Example action: stop the car
 		speed = 0;
 	}
 	if (CheckCollision(car1, car3)) {
