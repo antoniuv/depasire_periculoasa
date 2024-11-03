@@ -19,7 +19,6 @@ void SlowdownRoad(float deltaTime) {
 		// Stop the road completely after 5 seconds
 		if (elapsedTime >= slowdownTime) {
 			speed = 0.0f;
-			slowingDown = false; // Reset the slowdown
 		}
 	}
 }
