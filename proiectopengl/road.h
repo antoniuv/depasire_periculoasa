@@ -4,6 +4,26 @@ float roadYPos[numRoadSegments] = { yMax - 3 * heightRoad, yMax - 2 * heightRoad
 float speed = 900.0f; //de aici se poate schimba viteza
 float offset = 0.0f;
 
+float slowdownTime = 2.0f; // duration of the slowdown in seconds
+float elapsedTime = 0.0f; // track the time passed during slowdown
+bool slowingDown = false; // flag to initiate slowdown
+float initialSpeed = speed; // store the initial speed
+
+void SlowdownRoad(float deltaTime) {
+	if (slowingDown && elapsedTime < slowdownTime) {
+		// Calculate the deceleration rate based on time
+		float deceleration = initialSpeed / slowdownTime;
+		speed = initialSpeed - deceleration * elapsedTime;
+		elapsedTime += deltaTime;
+
+		// Stop the road completely after 5 seconds
+		if (elapsedTime >= slowdownTime) {
+			speed = 0.0f;
+			slowingDown = false; // Reset the slowdown
+		}
+	}
+}
+
 void RoadPoints(void) {
 	static const GLfloat road[] = {
 		//coordonate                     coordonate texturare
@@ -63,6 +83,7 @@ void MoveRoad(int value) {
 	if (offset <= -heightRoad) {
 		offset += heightRoad;
 	}
+	SlowdownRoad(deltaTime);
 	glutPostRedisplay();
 	glutTimerFunc(16, MoveRoad, 0);
 }
