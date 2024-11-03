@@ -13,8 +13,8 @@ BoundingBox GetCarBoundingBox(float tx, float ty, float scale, float width, floa
 	BoundingBox box;
 	box.xMin = tx;
 	box.xMax = tx + width * scale;
-	box.yMin = ty - height * scale;
-	box.yMax = ty;
+	box.yMin = ty;
+	box.yMax = ty + height * scale;
 	return box;
 }
 
@@ -30,7 +30,7 @@ void CheckAndHandleCollisions() {
 
 	if (CheckCollision(car1, car2) || CheckCollision(car1, car3) || CheckCollision(car2, car3)) {
 		// Handle collision between any two cars
-		//slowingDown = true; // Start slowing down the road
+		slowingDown = true; // Start slowing down the road
 		elapsedTime = 0.0f; // Reset the slowdown timer
 		speed1 = 0;
 		speed = 0;
