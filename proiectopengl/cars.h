@@ -2,6 +2,51 @@ float heightCar = 1000.0f; //folosit in MoveCar
 float speed1 = 600.0f; //de aici se poate schimba viteza
 float offset1 = -400.0f;
 
+struct BoundingBox {
+	float xMin;
+	float xMax;
+	float yMin;
+	float yMax;
+};
+
+BoundingBox GetCarBoundingBox(float tx, float ty, float scale, float width, float height) {
+	BoundingBox box;
+	box.xMin = tx;
+	box.xMax = tx + width * scale;
+	box.yMin = ty;
+	box.yMax = ty + height * scale;
+	return box;
+}
+
+bool CheckCollision(const BoundingBox& box1, const BoundingBox& box2) {
+	return (box1.xMin < box2.xMax && box1.xMax > box2.xMin &&
+		box1.yMin < box2.yMax && box1.yMax > box2.yMin);
+}
+
+void CheckAndHandleCollisions() {
+	BoundingBox car1 = GetCarBoundingBox(350.0f, -30.0f, 0.45, 207.0f, 388.0f);
+	BoundingBox car2 = GetCarBoundingBox(tx, ty, 0.45, 207.0f, 388.0f);
+	BoundingBox car3 = GetCarBoundingBox(-300.0f, offset1, 0.45, 207.0f, 388.0f);
+
+	if (CheckCollision(car1, car2)) {
+		// Handle collision between car1 and car2 (e.g., stop movement, display a message, etc.)
+		speed1 = 0; // Example action: stop the car
+		speed = 0;
+	}
+	if (CheckCollision(car1, car3)) {
+		// Handle collision between car1 and car3
+		speed1 = 0; // Example action: stop the car
+		speed = 0;
+	}
+	if (CheckCollision(car2, car3)) {
+		// Handle collision between car2 and car3
+		speed1 = 0; // Example action: stop the car
+		speed = 0;
+	}
+}
+
+
+
 void ProcessSpecialKeys(int key, int xx, int yy)
 {
 	switch (key)			//	Procesarea tastelor 'LEFT', 'RIGHT', 'UP', 'DOWN'
@@ -108,6 +153,9 @@ void DrawCars(void) {
 void MoveCar(int value) {
 	float deltaTime = 0.016f;
 	offset1 -= speed1 * deltaTime;
+
+	// Check for collision
+	CheckAndHandleCollisions();
 
 	// Reset offset if it exceeds the height of a road segment
 	if (offset1 <= -heightCar - 200.0f) {
