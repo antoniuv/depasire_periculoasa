@@ -1,4 +1,5 @@
-﻿#include <windows.h>        //	Utilizarea functiilor de sistem Windows (crearea de ferestre, manipularea fisierelor si directoarelor);
+﻿#include <iostream>
+#include <windows.h>        //	Utilizarea functiilor de sistem Windows (crearea de ferestre, manipularea fisierelor si directoarelor);
 #include <stdlib.h> 
         //  Biblioteci necesare pentru citirea shaderelor;
 #include <stdio.h>
