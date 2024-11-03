@@ -1,3 +1,6 @@
+float heightCar = 1000.0f; //folosit in MoveCar
+float speed1 = 600.0f; //de aici se poate schimba viteza
+float offset1 = -400.0f;
 
 void ProcessSpecialKeys(int key, int xx, int yy)
 {
@@ -75,6 +78,7 @@ void CarPoints(void) {
 void DrawCars(void) {
 	matrScale1 = glm::scale(glm::mat4(1.0f), glm::vec3(0.45, 0.45, 0.0));
 	matrRot = glm::rotate(glm::mat4(1.0f), angle, glm::vec3(0.0, 0.0, 1.0));
+	matrRot2 = glm::rotate(glm::mat4(1.0f), angle1, glm::vec3(0.0, 0.0, 1.0));
 	// Bind cu texturi si cu VBO, EBO
 	glBindVertexArray(VaoId1);
 	glActiveTexture(GL_TEXTURE0);
@@ -93,4 +97,22 @@ void DrawCars(void) {
 	myMatrix = resizeMatrix * matrScale1 * matrTransl2 * matrRot;
 	glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(0));
+
+	//masina de pe banda opusa
+		glm::mat4 matrTransl3 = glm::translate(glm::mat4(1.0f), glm::vec3(-300.0, offset1, 0.0));
+		myMatrix = resizeMatrix * matrScale1 * matrTransl3 * matrRot2;
+		glUniformMatrix4fv(myMatrixLocation, 1, GL_FALSE, &myMatrix[0][0]);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(0));
+}
+
+void MoveCar(int value) {
+	float deltaTime = 0.016f;
+	offset1 -= speed1 * deltaTime;
+
+	// Reset offset if it exceeds the height of a road segment
+	if (offset1 <= -heightCar - 200.0f) {
+		offset1 += heightCar*5;
+	}
+	glutPostRedisplay();
+	glutTimerFunc(16, MoveCar, 0);
 }

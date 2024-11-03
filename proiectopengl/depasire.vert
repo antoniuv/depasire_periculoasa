@@ -9,7 +9,6 @@ layout (location = 1) in vec4 texCoord;
  
 
 //  Variabile de iesire;
-out vec4 gl_Position;   //  Transmite pozitia actualizata spre programul principal;
 out vec2 tex_Coord;     //  Transmite textura (de modificat in Shader.frag); 
 
 
