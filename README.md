@@ -1,21 +1,58 @@
 # Documentatie
+![alt text](main_app.png)
 
-### Centrare a animatiei pe ecran
-Pentru avea o experienta cat mai buna, windowul a fost centrat pe ecran. S-a folosit GLUT_SCREEN pentru a afla dimnesiunea ecranului.
+### Conceptul proiectului
 
-Detaliile despre implementare se pot observa in acest commit : ...
+Proiectul include 2 masini (tip Formula 1) care merg pe o strada prin padure, iar cea din spate doreste sa faca o intrecere periculoasa. 
+Constant, vin masini si din sens opus si exista sansa de a face un accident daca nu este antenta masina nerabdatoare.
 
-### Crearea masini
-Pentru aceasta se va crea un dreptunghi cu o textura de masina pe aceasta. 
+### Transformari incluse
+Au fost folosite majoritatea transformarilor prezentate la curs, anume: 
+- translatii pentru a face iluzia ca masinile se misca
+- scalare pentru a modela dimensiunea obiectelor pe ecran (masina, strada, background)
+- rotatie pentru virajele masinii
 
-Explicatie pentru realizarea masinii: 
+### Originalitatea
+Aplicatia este conceputa pentru lucru in echipa, anume au fost create fisiere .h pentru gestionarea
+diferitelor obiecte individual de main.cpp. Astfel este usor de schimbat un obiect, si exista un pattern in programul principal
+pentru a adauga texturi noi si (vao,vbo,ebo) nou.
 
-1. punerea punctelor + coordonatelor de texturare
+In plus, a fost creat un drum infinit folosind doar 5 obiecte 
+(fiecare bucata este miscata pe axa oy cu o viteza constanta pana ajunge sa parcurca lungimea acesteia, apoi este translatata in pozitia ei originala)
 
-2. Folosirea Indicilor pentru triangulare
+De asemenea, aplicatia dispune de detectarea coliziunilor intre masini, iar daca ecestea se lovesc, se si opresc.
 
-3. Crearea bufferului in functie de cum am pus punctele.
+### Capturi de ecran / explicare cod
 
-4. Asigurarea eliberarii memorie la sfarsit.
+1. Aplicatia este centrate pe ecran, ce am reusit sa facem prin aceasta parte de cod: 
+![alt text](code_center.png)
 
-5. Adaugarea functiei LoadTexture
+2. Masinile sunt de tip `png`, deci a fast schimbat LoadTexture pentru a accepta `RGBA`
+ si au fost aduagate aceste linii de cod pentru a face posibil un background invizibil pentru masini.
+ 	```cpp
+    glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA); 
+    ```
+
+3. Functia pentru miscarea drumului: 
+![alt text](moveRoad.png)
+
+4. Drumul a fost creat dinamic, si pus patratele unele sub altele pana au umplut imaginea.
+![alt text](image.png)
+
+5. Pentru miscarea masinii folosind tastatura exista functia ProcessSpecialKeys si o translatie 
+cu variabile, schimbate in aceasta functie la fiecare frame. In plus, cand se misca in stanga si in dreapta se face o rotatie.
+![alt text](image-1.png)
+![alt text](image-2.png)
+
+6. Miscarea masinii de pe sensul opus se afla in aceasta functie: 
+![alt text](image-3.png)
+
+7. Coliziuni TODO
+
+
+### Contributii individual
+
+- `Bivol Mihai` a facut obiectele (masina cu textura, strada, background) si miscarea drumului la infinit.
+
+- `Varona Antoniu` a facut posibila miscarea masinii folosind tastatura, crearea masinii din sens opus, translatarea ei pe sensul oy, si coloziuni.
