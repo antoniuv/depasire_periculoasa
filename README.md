@@ -27,7 +27,7 @@ De asemenea, aplicatia dispune de detectarea coliziunilor intre masini, iar daca
 1. Aplicatia este centrate pe ecran, ce am reusit sa facem prin aceasta parte de cod: 
 ![alt text](code_center.png)
 
-2. Masinile sunt de tip `png`, deci a fast schimbat LoadTexture pentru a accepta `RGBA`
+2. Masinile sunt de tip `png`, deci a fost schimbat LoadTexture pentru a accepta `RGBA`
  si au fost aduagate aceste linii de cod pentru a face posibil un background invizibil pentru masini.
  	```cpp
     glEnable(GL_BLEND);
@@ -48,11 +48,12 @@ cu variabile, schimbate in aceasta functie la fiecare frame. In plus, cand se mi
 6. Miscarea masinii de pe sensul opus se afla in aceasta functie: 
 ![alt text](image-3.png)
 
-7. Coliziuni TODO
+7. Coliziunile s-au realizat prin calcularea de distante intre masini folosind scaderi intre coordonatele
+obiectelor ce isi modifica pozitia, sau incadrarea intre anumite intervale pentru obiectele statice
 
 
 ### Contributii individual
 
 - `Bivol Mihai` a facut obiectele (masina cu textura, strada, background) si miscarea drumului la infinit.
 
-- `Varona Antoniu` a facut posibila miscarea masinii folosind tastatura, crearea masinii din sens opus, translatarea ei pe sensul oy, si coloziuni.
+- `Varona Antoniu` a facut posibila miscarea masinii folosind tastatura, crearea masinii din sens opus, translatarea ei pe sensul oy, si coliziuni.
