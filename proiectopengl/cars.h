@@ -18,14 +18,9 @@ BoundingBox GetCarBoundingBox(float tx, float ty, float scale, float width, floa
 	return box;
 }
 
-void PrintBoundingBox(const BoundingBox& box, const char* carName) {
-	std::cout << carName << " Bounding Box: "
-		<< "xMin: " << box.xMin << ", xMax: " << box.xMax
-		<< ", yMin: " << box.yMin << ", yMax: " << box.yMax << std::endl;
-}
 
 bool CheckCollision(const BoundingBox& box1, const BoundingBox& box2) {
-	float epsilon = 0.1f; // Small buffer to account for precision issues
+	float epsilon = 0.1f;
 	return (box1.xMin < box2.xMax + epsilon && box1.xMax > box2.xMin - epsilon &&
 		box1.yMin < box2.yMax + epsilon && box1.yMax > box2.yMin - epsilon);
 }
@@ -35,14 +30,9 @@ void CheckAndHandleCollisions() {
 	BoundingBox car1 = GetCarBoundingBox(350.0f, -191.0f, 0.45, 207.0f, 388.0f);
 	BoundingBox car2 = GetCarBoundingBox(tx, ty, 0.45, 207.0f, 388.0f);
 
-	// Print the bounding boxes for debugging
-	//PrintBoundingBox(car1, "Car1");
-	//PrintBoundingBox(car2, "Car2");
-	//PrintBoundingBox(car3, "Car3");
 	//std::cout << offset1 << " " << ty << std::endl;
 	//std::cout << tx << std::endl;
 	if (CheckCollision(car1, car2)) {
-		// Handle collision between any two cars
 		slowingDown = true; // Start slowing down the road
 		elapsedTime = 0.0f; // Reset the slowdown timer
 		speed1 = 1800;
