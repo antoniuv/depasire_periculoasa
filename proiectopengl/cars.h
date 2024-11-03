@@ -24,11 +24,11 @@ bool CheckCollision(const BoundingBox& box1, const BoundingBox& box2) {
 }
 
 void CheckAndHandleCollisions() {
-	BoundingBox car1 = GetCarBoundingBox(350.0f, -190.0f, 0.45, 207.0f, 388.0f);
+	BoundingBox car1 = GetCarBoundingBox(350.0f, -191.0f, 0.45, 207.0f, 388.0f);
 	BoundingBox car2 = GetCarBoundingBox(tx, ty, 0.45, 207.0f, 388.0f);
 	BoundingBox car3 = GetCarBoundingBox(-300.0f, offset1, 0.45, 207.0f, 388.0f);
 
-	if (CheckCollision(car1, car2) || CheckCollision(car2, car3)) {
+	if (CheckCollision(car1, car2) || CheckCollision(car1, car3) || CheckCollision(car2, car3)) {
 		// Handle collision between any two cars
 		//slowingDown = true; // Start slowing down the road
 		elapsedTime = 0.0f; // Reset the slowdown timer
