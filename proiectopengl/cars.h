@@ -34,19 +34,29 @@ bool CheckCollision(const BoundingBox& box1, const BoundingBox& box2) {
 void CheckAndHandleCollisions() {
 	BoundingBox car1 = GetCarBoundingBox(350.0f, -191.0f, 0.45, 207.0f, 388.0f);
 	BoundingBox car2 = GetCarBoundingBox(tx, ty, 0.45, 207.0f, 388.0f);
-	BoundingBox car3 = GetCarBoundingBox(-300.0f, offset1, 0.45, 207.0f, 388.0f);
 
 	// Print the bounding boxes for debugging
-	PrintBoundingBox(car1, "Car1");
-	PrintBoundingBox(car2, "Car2");
-	PrintBoundingBox(car3, "Car3");
-
-	if (CheckCollision(car1, car2) || CheckCollision(car1, car3) || CheckCollision(car2, car3)) {
+	//PrintBoundingBox(car1, "Car1");
+	//PrintBoundingBox(car2, "Car2");
+	//PrintBoundingBox(car3, "Car3");
+	//std::cout << offset1 << " " << ty << std::endl;
+	//std::cout << tx << std::endl;
+	if (CheckCollision(car1, car2)) {
 		// Handle collision between any two cars
 		slowingDown = true; // Start slowing down the road
 		elapsedTime = 0.0f; // Reset the slowdown timer
-		speed1 = 0;
+		speed1 = 1800;
 		speed = 0;
+	}
+	if (tx <= 0.0f && tx >= -300.0f) {
+
+		if ((offset1 - ty) <= 700.0f && (offset1 - ty) >= -200.0f) {
+			slowingDown = true; // Start slowing down the road
+			elapsedTime = 0.0f; // Reset the slowdown timer
+			speed1 = 0;
+			speed = 0;
+		}
+
 	}
 }
 
