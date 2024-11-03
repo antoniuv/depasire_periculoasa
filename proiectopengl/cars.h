@@ -13,8 +13,8 @@ BoundingBox GetCarBoundingBox(float tx, float ty, float scale, float width, floa
 	BoundingBox box;
 	box.xMin = tx;
 	box.xMax = tx + width * scale;
-	box.yMin = ty;
-	box.yMax = ty + height * scale;
+	box.yMin = ty - height * scale;
+	box.yMax = ty;
 	return box;
 }
 
@@ -24,15 +24,16 @@ bool CheckCollision(const BoundingBox& box1, const BoundingBox& box2) {
 }
 
 void CheckAndHandleCollisions() {
-	BoundingBox car1 = GetCarBoundingBox(350.0f, -30.0f + -0.45f * 388.0f, 0.45, 207.0f, 388.0f);
+	BoundingBox car1 = GetCarBoundingBox(350.0f, -30.0f, 0.45, 207.0f, 388.0f);
 	BoundingBox car2 = GetCarBoundingBox(tx, ty, 0.45, 207.0f, 388.0f);
 	BoundingBox car3 = GetCarBoundingBox(-300.0f, offset1, 0.45, 207.0f, 388.0f);
 
 	if (CheckCollision(car1, car2) || CheckCollision(car1, car3) || CheckCollision(car2, car3)) {
 		// Handle collision between any two cars
-		slowingDown = true; // Start slowing down the road
+		//slowingDown = true; // Start slowing down the road
 		elapsedTime = 0.0f; // Reset the slowdown timer
 		speed1 = 0;
+		speed = 0;
 	}
 }
 
