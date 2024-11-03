@@ -70,8 +70,10 @@ void DrawRoad(void) {
 	}
 }
 
-//functie folosita pentru a masica drumul folosind un offset (se duce inapoi de unde a inceput fluent)
-//acel glutTimerFunc ne lasa sa controlam mai bine frameurile (in acest exemplu, o data la 16ms se randeaza imaginea)
+//functie folosita pentru a masica drumul folosind un offset 
+// (se duce inapoi de unde a inceput fluent)
+//acel glutTimerFunc ne lasa sa controlam mai bine frameurile 
+// (in acest exemplu, o data la 16ms se randeaza imaginea)
 //deltaTime ajuta tot la acest aspect de randare pe frameuri.
 
 void MoveRoad(int value) {
@@ -86,3 +88,5 @@ void MoveRoad(int value) {
 	glutPostRedisplay();
 	glutTimerFunc(16, MoveRoad, 0);
 }
+
+
