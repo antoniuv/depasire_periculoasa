@@ -44,9 +44,8 @@ void CheckAndHandleCollisions() {
 	if (CheckCollision(car1, car2)) {
 		// Handle collision between any two cars
 		slowingDown = true; // Start slowing down the road
-		elapsedTime = 0.0f; // Reset the slowdown timer
 		speed1 = 1800;
-		speed = 0;
+		/*speed = 0;*/
 	}
 	if (tx <= 0.0f && tx >= -300.0f) {
 
