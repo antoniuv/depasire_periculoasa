@@ -50,7 +50,7 @@ cu variabile, schimbate in aceasta functie la fiecare frame. In plus, cand se mi
 
 7. Coliziunile s-au realizat prin calcularea de distante intre masini folosind scaderi intre coordonatele
 obiectelor ce isi modifica pozitia, sau incadrarea intre anumite intervale pentru obiectele statice
-
+![alt text](image-4.png)
 
 ### Contributii individual
 
