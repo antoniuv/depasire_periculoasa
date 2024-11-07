@@ -56,7 +56,7 @@ obiectelor ce isi modifica pozitia, sau incadrarea intre anumite intervale pentr
 
 <img src="image-4.png" alt="drawing" width="900"/>
 
-### Contributii individual
+### Contributii individuale
 
 - `Bivol Mihai` a facut obiectele (masina cu textura, strada, background) si miscarea drumului la infinit.
 
