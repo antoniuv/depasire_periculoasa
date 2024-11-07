@@ -61,3 +61,6 @@ obiectelor ce isi modifica pozitia, sau incadrarea intre anumite intervale pentr
 - `Bivol Mihai` a facut obiectele (masina cu textura, strada, background) si miscarea drumului la infinit.
 
 - `Varona Antoniu` a facut posibila miscarea masinii folosind tastatura, crearea masinii din sens opus, translatarea ei pe sensul oy, si coliziuni.
+
+    
+.
