@@ -25,7 +25,7 @@ De asemenea, aplicatia dispune de detectarea coliziunilor intre masini, iar daca
 ### Capturi de ecran / explicare cod
 
 1. Aplicatia este centrate pe ecran, ce am reusit sa facem prin aceasta parte de cod: 
-![alt text](code_center.png)
+<img src="code_center.png" alt="drawing" width="400"/>
 
 2. Masinile sunt de tip `png`, deci a fost schimbat LoadTexture pentru a accepta `RGBA`
  si au fost aduagate aceste linii de cod pentru a face posibil un background invizibil pentru masini.
@@ -35,7 +35,7 @@ De asemenea, aplicatia dispune de detectarea coliziunilor intre masini, iar daca
     ```
 
 3. Functia pentru miscarea drumului: 
-![alt text](moveRoad.png)
+<img src="moveRoad.png" alt="drawing" width="300"/>
 
 4. Drumul a fost creat dinamic, si pus patratele unele sub altele pana au umplut imaginea.
 ![alt text](image.png)
@@ -43,14 +43,13 @@ De asemenea, aplicatia dispune de detectarea coliziunilor intre masini, iar daca
 5. Pentru miscarea masinii folosind tastatura exista functia ProcessSpecialKeys si o translatie 
 cu variabile, schimbate in aceasta functie la fiecare frame. In plus, cand se misca in stanga si in dreapta se face o rotatie.
 ![alt text](image-1.png)
-![alt text](image-2.png)
+<img src="image-2.png" alt="drawing" width="300"/>
 
 6. Miscarea masinii de pe sensul opus se afla in aceasta functie: 
-![alt text](image-3.png)
-
+<img src="image-3.png" alt="drawing" width="300"/>
 7. Coliziunile s-au realizat prin calcularea de distante intre masini folosind scaderi intre coordonatele
-obiectelor ce isi modifica pozitia, sau incadrarea intre anumite intervale pentru obiectele statice
-![alt text](image-4.png)
+obiectelor ce isi modifica pozitia, sau incadrarea intre anumite intervale pentru obiectele statice.   
+<img src="image-4.png" alt="drawing" width="900"/>
 
 ### Contributii individual
 
